@@ -112,8 +112,41 @@ internal class Program
         Console.WriteLine("Lungimea celei mai lungi secvențe consecutive: " + secventaMaxi(nums1));
 
 
+        //6. Subarray Sum Equals K: Given an array of integers and an integer k, find the total number of continuous subarrays whose sum equals to k
+        Console.WriteLine("\n\nProblema 6:");
+        int[] nums2 = { 1, 2, 3, 4, 5 };
+        int k = 9;
+        Console.WriteLine("Numărul total de subarray-uri cu suma " + k + ": " + SubarraySumEqualsK(nums2, k));
 
 
+    }
+
+    static int SubarraySumEqualsK(int[] nums, int k)
+    {
+        if (nums == null || nums.Length == 0)
+        {
+            return 0;
+        }
+
+        int count = 0;
+        int sum = 0;
+
+        IHashTable<int, int> sumCountTable = new HashTable<int, int>(100);
+        sumCountTable.Put(0, 1);
+
+        for (int i = 0; i < nums.Length; i++)
+        {
+            sum += nums[i];
+
+            if (sumCountTable.ContainsKey(sum - k))
+            {
+                count += sumCountTable.Get(sum - k);
+            }
+
+            sumCountTable.Put(sum, sumCountTable.ContainsKey(sum) ? sumCountTable.Get(sum) + 1 : 1);
+        }
+
+        return count;
     }
 
     static void EqualsTarget()
