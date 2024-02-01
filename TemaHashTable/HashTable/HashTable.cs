@@ -15,7 +15,6 @@ namespace TemaHashTable.HashTable
         private List<string> cuvinte;
         private List<string> cuvinteGresite;
 
-
         public HashTable(int size)
         {
 
@@ -82,5 +81,21 @@ namespace TemaHashTable.HashTable
             }
             return sb.ToString();
         }
+
+        public List<V> GetValues(int key)
+        {
+            int index = Math.Abs(key.GetHashCode() % hashtable.Length);
+            return hashtable[index].ConvertAll(pair => pair.Value);
+        }
+
+
+
+
+
+
+
+
+
+
     }
 }
