@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Data.SqlTypes;
 using System.Linq;
 using TemaHashTable.HashTable;
 using TemaHashTable.HashTable.interfaces;
@@ -118,7 +119,43 @@ internal class Program
         int k = 9;
         Console.WriteLine("Numărul total de subarray-uri cu suma " + k + ": " + SubarraySumEqualsK(nums2, k));
 
+        //7. Longest Substring Without Repeating Characters: Given a string s, find the length of the longest substring without repeating characters
+        Console.WriteLine("\n\nProblema 7:");
+        string s = "abcabcbb";
+        Console.WriteLine("Lungimea celui mai lung subșir fără caractere repetate: " + secventaLunga(s));
 
+
+
+
+
+    }
+
+    static int secventaLunga(string s)
+    {
+        if (string.IsNullOrEmpty(s))
+        {
+            return 0;
+        }
+
+        int maxLength = 0;
+        int left = 0;
+        IHashTable<int, char> charIndexTable = new HashTable<int, char>(100);
+
+        for (int right = 0; right < s.Length; right++)
+        {
+            char currentChar = s[right];
+
+            if (charIndexTable.ContainsKey(currentChar) && charIndexTable.Get(currentChar) >= left)
+            {
+                left = charIndexTable.Get(currentChar) + 1;
+            }
+
+            charIndexTable.Put(right, currentChar);
+
+            maxLength = Math.Max(maxLength, right - left + 1);
+        }
+
+        return maxLength;
     }
 
     static int SubarraySumEqualsK(int[] nums, int k)
