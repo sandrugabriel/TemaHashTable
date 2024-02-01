@@ -88,14 +88,19 @@ namespace TemaHashTable.HashTable
             return hashtable[index].ConvertAll(pair => pair.Value);
         }
 
-
-
-
-
-
-
-
-
-
+        public bool TryGetValue(K key, out V value)
+        {
+            int index = Math.Abs(key.GetHashCode() % hashtable.Length);
+            foreach (var pair in hashtable[index])
+            {
+                if (pair.Key.Equals(key))
+                {
+                    value = pair.Value;
+                    return true;
+                }
+            }
+            value = default(V);
+            return false;
+        }
     }
 }

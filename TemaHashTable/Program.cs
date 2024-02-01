@@ -102,6 +102,27 @@ internal class Program
         Console.WriteLine("Pozitia primei litere care apare doar odata este "+primaLiteraNeRpetabila(hashTable1,text1));
 
 
+        //4. Two Sum: Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target
+        Console.WriteLine("\n\nProblema 4:");
+        int[] nums = { 2, 7, 11, 15 };
+        int target = 9;
+        IHashTable<int, int> numTable = new HashTable<int, int>(100);
+        for (int i = 0; i < nums.Length; i++)
+        {
+            int complement = target - nums[i];
+            if (numTable.TryGetValue(complement, out int complementIndex))
+            {
+                Console.WriteLine($"Indicii care aduna la target: {complementIndex} si {i}");
+                return;
+            }
+
+            numTable.Put(nums[i], i);
+        }
+        Console.WriteLine("Nu s-au găsit indici care adună la target.");
+
+
+
+
 
     }
 }
