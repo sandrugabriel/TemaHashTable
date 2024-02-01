@@ -143,8 +143,39 @@ internal class Program
         PrintList(deepCopy);
 
 
+        //10. Happy Number: Write an algorithm to determine if a number n is "happy".
+        Console.WriteLine("\n\nProblema 10:");
+        int n = 19;
+        Console.WriteLine($"{n} este un număr fericit: {IsHappy(n)}");
 
 
+    }
+
+    static bool IsHappy(int n)
+    {
+        IHashTable<int, bool> seenNumbers = new HashTable<int, bool>(100);
+
+        while (n != 1 && !seenNumbers.ContainsKey(n))
+        {
+            seenNumbers.Put(n, true);
+            n = CalculateSquareSum(n);
+        }
+
+        return n == 1;
+    }
+
+    static int CalculateSquareSum(int n)
+    {
+        int sum = 0;
+
+        while (n > 0)
+        {
+            int digit = n % 10;
+            sum += digit * digit;
+            n /= 10;
+        }
+
+        return sum;
     }
 
     static int secventaLunga(string s)
