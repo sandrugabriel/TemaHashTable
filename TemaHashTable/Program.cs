@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Data.SqlTypes;
+using System.Drawing;
 using System.Linq;
+using System.Xml.Linq;
 using TemaHashTable.HashTable;
 using TemaHashTable.HashTable.interfaces;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 internal class Program
 {
@@ -107,23 +110,37 @@ internal class Program
         Console.WriteLine("\n\nProblema 4:");
         EqualsTarget();
 
+
         //5. Longest Consecutive Sequence: Given an unsorted array of integers nums, return the length of the longest consecutive elements sequence.
         Console.WriteLine("\n\nProblema 5:");
         int[] nums1 = { 100, 1, 2, 3, 4, 200 };
-        Console.WriteLine("Lungimea celei mai lungi secvențe consecutive: " + secventaMaxi(nums1));
+        Console.WriteLine("Lungimea celei mai lungi secvente consecutive: " + secventaMaxi(nums1));
 
 
         //6. Subarray Sum Equals K: Given an array of integers and an integer k, find the total number of continuous subarrays whose sum equals to k
         Console.WriteLine("\n\nProblema 6:");
         int[] nums2 = { 1, 2, 3, 4, 5 };
         int k = 9;
-        Console.WriteLine("Numărul total de subarray-uri cu suma " + k + ": " + SubarraySumEqualsK(nums2, k));
+        Console.WriteLine("Numarul total de subarray-uri cu suma " + k + ": " + SubarraySumEqualsK(nums2, k));
 
         //7. Longest Substring Without Repeating Characters: Given a string s, find the length of the longest substring without repeating characters
         Console.WriteLine("\n\nProblema 7:");
         string s = "abcabcbb";
-        Console.WriteLine("Lungimea celui mai lung subșir fără caractere repetate: " + secventaLunga(s));
+        Console.WriteLine("Lungimea celui mai lung subsir fara caractere repetate: " + secventaLunga(s));
 
+
+        //8. Copy List with Random Pointer: A linked list is given where each node contains an additional random pointer which could point to any node in the list or null.Return a deep copy of the list.
+        Console.WriteLine("\n\nProblema 8:");
+        Node head = new Node(1);
+        head.next = new Node(2);
+        head.next.next = new Node(3);
+        head.random = head.next.next;
+        head.next.random = head;
+        Node deepCopy = CopyRandomList(head);
+        Console.WriteLine("Lista originala:");
+        PrintList(head);
+        Console.WriteLine("\nCopia adanca:");
+        PrintList(deepCopy);
 
 
 
@@ -244,5 +261,74 @@ internal class Program
         return maxLength;
     }
 
+    public class Node : IComparable<Node>
+    {
+        public int val;
+        public Node next;
+        public Node random;
 
+        public Node(int val)
+        {
+            this.val = val;
+            this.next = null;
+            this.random = null;
+        }
+
+        public override string? ToString()
+        {
+            return (val).ToString();
+        }
+
+        int IComparable<Node>.CompareTo(Node? other)
+        {
+            return ((IComparable<Node>)next).CompareTo(other);
+        }
+
+    }
+    static Node CopyRandomList(Node head)
+    {
+        if (head == null)
+        {
+            return null;
+        }
+
+        IHashTable<Node, Node> nodeMapping = new HashTable<Node, Node>(1000);
+
+        Node current = head;
+        while (current != null)
+        {
+            nodeMapping.Put(current, new Node(current.val));
+            current = current.next;
+        }
+
+        current = head;
+        while (current != null)
+        {
+            Node newNode = nodeMapping.Get(current);
+
+            if (current.next != null)
+            {
+                newNode.next = nodeMapping.ContainsKey(current.next) ? nodeMapping.Get(current.next) : null;
+            }
+
+            if (current.random != null)
+            {
+                newNode.random = nodeMapping.ContainsKey(current.random) ? nodeMapping.Get(current.random) : null;
+            }
+
+            current = current.next;
+        }
+
+        return nodeMapping.Get(head);
+    }
+    static void PrintList(Node head)
+    {
+        Node current = head;
+        while (current != null)
+        {
+            Console.Write($"{current.val} (Random: {(current.random != null ? current.random.val.ToString() : "null")}) ");
+            current = current.next;
+        }
+        Console.WriteLine();
+    }
 }
