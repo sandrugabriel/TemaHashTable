@@ -14,6 +14,7 @@ namespace TemaHashTable.HashTable
         private readonly List<Stored<K, V>>[] hashtable;
         private List<string> cuvinte;
         private List<string> cuvinteGresite;
+        private int count = 256;
 
         public HashTable(int size)
         {
