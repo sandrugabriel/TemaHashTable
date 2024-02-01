@@ -17,5 +17,6 @@ namespace TemaHashTable.HashTable.interfaces
 
         string ToString();
 
+        List<V> GetValues(int key);
     }
 }
