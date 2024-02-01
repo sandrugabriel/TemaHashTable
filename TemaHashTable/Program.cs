@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using TemaHashTable.HashTable;
 using TemaHashTable.HashTable.interfaces;
 
@@ -26,6 +27,13 @@ internal class Program
         return true;
     }
 
+    static int GetAnagramKey(string word)
+    {
+        char[] chars = word.ToCharArray();
+        Array.Sort(chars);
+        return new string(chars).GetHashCode();
+    }
+
     private static void Main(string[] args)
     {
         //9. Design HashMap: Design a HashMap without using any built-in hash table libraries.
@@ -33,8 +41,36 @@ internal class Program
         hashTable.ToString();
 
         //1. Unique Characters: Determine if a string has all unique characters without using additional data structures.
+        Console.WriteLine("Problema 1:\n");
         string text = "asdfag";
-       Console.WriteLine(caractereUnice(hashTable,text));
+        Console.WriteLine(caractereUnice(hashTable,text));
+
+        //2. Group Anagrams: Given an array of strings, group anagrams together.
+        Console.WriteLine("\n\nProblema 2:\n");
+        string[] words = { "listen", "silent", "enlist", "eat", "tea", "ate" };
+        IHashTable<int, string> anagramGroups = new HashTable<int, string>(100);
+
+        foreach (string word in words)
+        {
+            int key = GetAnagramKey(word);
+            if (!anagramGroups.GetValues(key).Contains(word))
+            {
+                anagramGroups.Put(key, word);
+            }
+        }
+
+        Console.WriteLine("Grupurile de anagrame:");
+
+        for (int i = 0; i < 256; i++)
+        {
+            List<string> anagrams = anagramGroups.GetValues(i);
+            if (anagrams.Count > 1)
+            {
+                Console.WriteLine(string.Join(", ", anagrams));
+            }
+        }
+
+
 
 
     }
