@@ -28,7 +28,7 @@ namespace TemaHashTable.HashTable
 
         private int HashKey(K key)
         {
-            return int.Parse(key.ToString()) % hashtable.Length;
+            return Math.Abs(int.Parse(key.ToString()) % hashtable.Length);
         }
 
         public void Put(K key, V value)
@@ -100,6 +100,19 @@ namespace TemaHashTable.HashTable
                 }
             }
             value = default(V);
+            return false;
+        }
+
+        public bool ContainsKey(K key)
+        {
+            int index = Math.Abs(key.GetHashCode() % hashtable.Length);
+            foreach (var pair in hashtable[index])
+            {
+                if (pair.Key.Equals(key))
+                {
+                    return true;
+                }
+            }
             return false;
         }
     }

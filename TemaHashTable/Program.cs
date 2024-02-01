@@ -104,6 +104,21 @@ internal class Program
 
         //4. Two Sum: Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target
         Console.WriteLine("\n\nProblema 4:");
+        EqualsTarget();
+
+        //5. Longest Consecutive Sequence: Given an unsorted array of integers nums, return the length of the longest consecutive elements sequence.
+        Console.WriteLine("\n\nProblema 5:");
+        int[] nums1 = { 100, 1, 2, 3, 4, 200 };
+        Console.WriteLine("Lungimea celei mai lungi secvențe consecutive: " + secventaMaxi(nums1));
+
+
+
+
+    }
+
+    static void EqualsTarget()
+    {
+
         int[] nums = { 2, 7, 11, 15 };
         int target = 9;
         IHashTable<int, int> numTable = new HashTable<int, int>(100);
@@ -119,10 +134,45 @@ internal class Program
             numTable.Put(nums[i], i);
         }
         Console.WriteLine("Nu s-au găsit indici care adună la target.");
-
-
-
-
-
     }
+
+    static int secventaMaxi(int[] nums)
+    {
+        if (nums == null || nums.Length == 0)
+        {
+            return 0;
+        }
+
+        IHashTable<int, bool> numTable = new HashTable<int, bool>(100);
+
+        foreach (int num in nums)
+        {
+            numTable.Put(num, true);
+        }
+
+        int maxLength = 0;
+
+        foreach (int num in nums)
+        {
+            if (numTable.ContainsKey(num - 1))
+            {
+                continue;
+            }
+
+            int currentNum = num;
+            int currentLength = 1;
+
+            while (numTable.ContainsKey(currentNum + 1))
+            {
+                currentNum++;
+                currentLength++;
+            }
+
+            maxLength = Math.Max(maxLength, currentLength);
+        }
+
+        return maxLength;
+    }
+
+
 }

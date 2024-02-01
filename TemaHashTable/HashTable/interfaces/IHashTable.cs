@@ -21,5 +21,8 @@ namespace TemaHashTable.HashTable.interfaces
 
         bool TryGetValue(K key, out V value);
 
+        bool ContainsKey(K key);
+
+
     }
 }
